@@ -7,6 +7,9 @@ public class Elevator {
     private boolean isdown;
     private double speed;
     private double position;
+    
+    // Added LED object for the elevator
+    private ElevetorLeds leds;
 
     // Constructor to initialize the elevator properties
     public Elevator(double minRange, double maxRange, double maxSpeed, double initialPosition) {
@@ -18,6 +21,7 @@ public class Elevator {
         this.speed = 0;
         this.isup = false;
         this.isdown = false;
+        this.leds = new ElevetorLeds(); // Initialize LEDs
     }
 
     public double getMinRange() {
@@ -46,6 +50,10 @@ public class Elevator {
 
     public double getPosition() {
         return position;
+    }
+    
+    public ElevetorLeds getLeds() {
+        return leds;
     }
 
     // Function to move the elevator up with a given power (between 0 and 1)
@@ -80,9 +88,11 @@ public class Elevator {
         if (isup) {
             this.speed = maxSpeed * power;
             this.position += this.speed;
+            leds.setLedColor("Green"); // Green when going up
         } else if (isdown) {
             this.speed = maxSpeed * power;
             this.position -= this.speed;
+            leds.setLedColor("Red"); // Red when going down
         } else {
             this.speed = 0;
         }
@@ -94,7 +104,7 @@ public class Elevator {
         } else if (this.position <= minRange) {
             this.position = minRange;
             stop();
+            leds.setLedColor("White"); // White when at the bottom position
         }
     }
-    
 }
